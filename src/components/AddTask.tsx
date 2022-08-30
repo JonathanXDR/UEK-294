@@ -4,7 +4,7 @@ export interface IProps {
   add: (newItem: ITask) => void;
 }
 
-const initTask = { taskDescription: '', taskId: 0, completed: false };
+const initTask = { title: '', id: 0, completed: false };
 function AddTask(props: IProps) {
   const [formValue, setFormValue] = useState(initTask);
 
@@ -24,14 +24,14 @@ function AddTask(props: IProps) {
         <sdx-input
           type="text"
           placeholder="Add Task"
-          value={formValue.taskDescription}
+          value={formValue.title}
           // onChange={onInputChange}
         ></sdx-input>
         <input
           type="text"
           placeholder="please input name"
-          name="taskDescription"
-          value={formValue.taskDescription}
+          name="title"
+          value={formValue.title}
           onChange={onInputChange}
         />
         <button>Add</button>
