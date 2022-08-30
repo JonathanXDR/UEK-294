@@ -23,10 +23,12 @@ function TaskList(props: IProps) {
                 <td>{task.id}</td>
                 <td>{task.title}</td>
                 <td>{task.completed}</td>
-                <sdx-button
-                  label="Delete"
-                  onClick={() => props.deleteTask(task)}
-                ></sdx-button>
+                <td>
+                  <sdx-button
+                    label="Delete"
+                    onClick={() => props.deleteTask(task)}
+                  ></sdx-button>
+                </td>
               </tr>
             );
           })}

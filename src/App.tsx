@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import TaskList from './components/TaskList';
 import ITask from './models/Task';
@@ -10,11 +9,11 @@ const defaultTasks: Array<ITask> = [];
 const baseURL = 'http://127.0.0.1:3000';
 
 function App() {
-  const [tasks, setTasks] = React.useState(defaultTasks);
+  const [tasks, setTasks] = useState(defaultTasks);
 
   React.useEffect(() => {
     axios
-      .get(`${baseURL}/tasks`)
+      .get(`${baseURL}/auth/jwt/tasks`)
       .then((response) => {
         setTasks(response.data);
       })
@@ -33,17 +32,18 @@ function App() {
         highestId = currentId;
       }
     }
+
     task.id = highestId + 1;
-    setTasks([...tasks, task]);
+    console.log(task);
 
     axios
-      .post(`${baseURL}/tasks`, {
+      .post(`${baseURL}/auth/jwt/tasks`, {
         id: task.id,
         title: task.title,
         completed: task.completed,
       })
       .then((response) => {
-        setTasks(response.data);
+        setTasks([...tasks, task]);
       })
       .catch((error) => {
         console.log(error);
@@ -56,7 +56,17 @@ function App() {
     let nonDeletedTasks = tasks.filter(
       (currentTask) => task.id !== currentTask.id
     );
-    setTasks(nonDeletedTasks);
+
+    axios
+      .delete(`${baseURL}/auth/jwt/task/${task.id}`)
+      .then(() => {
+        setTasks(nonDeletedTasks);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    if (!tasks) return 'No post!';
   }
 
   return (

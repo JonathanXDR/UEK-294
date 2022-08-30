@@ -21,12 +21,12 @@ function AddTask(props: IProps) {
   return (
     <div className="addTask">
       <form className="formAdd" onSubmit={onFormSubmit}>
-        <sdx-input
+        {/* <sdx-input
           type="text"
           placeholder="Add Task"
           value={formValue.title}
           // onChange={onInputChange}
-        ></sdx-input>
+        ></sdx-input> */}
         <input
           type="text"
           placeholder="please input name"
@@ -35,7 +35,7 @@ function AddTask(props: IProps) {
           onChange={onInputChange}
         />
         <button>Add</button>
-        <sdx-button label="Add"></sdx-button>
+        {/* <sdx-button label="Add"></sdx-button> */}
       </form>
     </div>
   );
