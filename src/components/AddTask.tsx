@@ -10,12 +10,15 @@ function AddTask(props: IProps) {
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormValue({ ...formValue, [name]: value });
+    setFormValue({ ...formValue, [name as string]: value });
+    console.log(formValue.title);
   };
 
   function onFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     props.add(formValue);
+    // props.onUpdateUser(user.id, user);
+    setFormValue({ ...formValue, title: '' });
   }
 
   return (
@@ -24,18 +27,24 @@ function AddTask(props: IProps) {
         {/* <sdx-input
           type="text"
           placeholder="Add Task"
+          name="title"
           value={formValue.title}
-          // onChange={onInputChange}
+          onChange={onInputChange}
         ></sdx-input> */}
         <input
+          id="input"
           type="text"
           placeholder="please input name"
           name="title"
           value={formValue.title}
           onChange={onInputChange}
         />
-        <button>Add</button>
-        {/* <sdx-button label="Add"></sdx-button> */}
+        <sdx-button theme="primary" label="Add"></sdx-button>
+
+        <div>
+          <sdx-button theme="primary" label="Save"></sdx-button>
+          <sdx-button theme="cancel" label="Cancel"></sdx-button>
+        </div>
       </form>
     </div>
   );

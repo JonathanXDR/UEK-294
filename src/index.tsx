@@ -5,6 +5,8 @@ import {
   JSX,
 } from '@swisscom/sdx/dist/js/webcomponents/loader';
 import '@swisscom/sdx/dist/css/webcomponents.css';
+import '@swisscom/sdx/dist/css/sdx.css';
+import '@swisscom/sdx';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
