@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import TaskList from './components/TaskList';
 import ITask from './models/Task';
@@ -17,28 +17,25 @@ function App() {
   };
 
   const [tasks, setTasks] = useState(defaultTasks);
+  const [token, setToken] = useState('');
 
-  let tasksRequested = useRef(false);
+  const title = document.getElementsByClassName('table__title')[0];
 
   React.useEffect(() => {
-    if (tasksRequested.current === false) {
-      axios
-        .get(`${baseURL}/auth/jwt/tasks`, headers)
-        .then((response) => {
-          setTasks(response.data);
-        })
-        .catch((error) => {
-          alert(error);
-        });
-    }
-    tasksRequested.current = true;
-  });
+    axios.get(`${baseURL}/auth/jwt/tasks`, headers).then((response) => {
+      setTasks(response.data);
+      title.innerHTML = 'You are logged in - Welcome to Todo App!';
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   if (!tasks) return null;
 
-  const setToken = (token: string) => {
-    localStorage.setItem('token', token);
-  };
+  function updateToken(token: string) {
+    setToken(token);
+    console.log('update Token');
+  }
 
   function addTask(task: ITask) {
     const body = {
@@ -56,12 +53,11 @@ function App() {
     }
 
     task.id = highestId + 1;
-    console.log(task);
 
     axios
       .post(`${baseURL}/auth/jwt/tasks`, body, headers)
       .then((response) => {
-        // console.log(token);
+        alert('Task successfully created');
         setTasks([...tasks, task]);
       })
       .catch((error) => {
@@ -72,13 +68,6 @@ function App() {
   }
 
   function updateTask(task: ITask) {
-    const newTasks = tasks.map((task: ITask) => {
-      if (task.id === task.id) {
-        return task;
-      }
-      return task;
-    });
-
     const body = {
       id: task.id,
       title: task.title,
@@ -88,6 +77,7 @@ function App() {
     axios
       .put(`${baseURL}/auth/jwt/tasks/${task.id}`, body, headers)
       .then((response) => {
+        alert('Task successfully updated');
         setTasks(
           tasks.map((t) => {
             if (t.id === task.id) {
@@ -110,7 +100,7 @@ function App() {
     axios
       .delete(`${baseURL}/auth/jwt/task/${task.id}`, headers)
       .then(() => {
-        alert('Task successfully deleted!');
+        alert('Task successfully deleted');
         setTasks(nonDeletedTasks);
       })
       .catch((error) => {
@@ -128,7 +118,7 @@ function App() {
         editTask={updateTask}
       ></TaskList>
       <AddTask add={addTask}></AddTask>
-      <Login setToken={setToken} />
+      <Login setToken={updateToken} />
     </div>
   );
 }

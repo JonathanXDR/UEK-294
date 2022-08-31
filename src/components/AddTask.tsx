@@ -23,13 +23,13 @@ function AddTask(props: IProps) {
     <div className="addTask margin-top-4">
       <form className="formAdd">
         <div className="margin-bottom-4">
+          <label htmlFor="title">Add Task</label>
           <sdx-input
             name="title"
             type="text"
-            placeholder="Add Task"
+            placeholder="Enter your Tasks"
             value={formValue.title}
             onInput={onInputChange}
-            // required
           ></sdx-input>
         </div>
         <sdx-button

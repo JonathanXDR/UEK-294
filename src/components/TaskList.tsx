@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ITask from '../models/Task';
 import '@swisscom/sdx/dist/css/webcomponents.css';
 import '@swisscom/sdx/dist/css/sdx.css';

@@ -7,7 +7,7 @@ export interface IProps {
   setToken: (token: string) => void;
 }
 
-function Login() {
+function Login(props: IProps) {
   const [credentials, updateCredentials] = useState({
     email: '',
     password: '',
@@ -19,7 +19,6 @@ function Login() {
   };
 
   function onSubmit(e: React.FormEvent<HTMLSdxButtonElement>) {
-    console.log(credentials);
     e.preventDefault();
     axios
       .post(`${baseURL}/auth/jwt/sign`, {
@@ -31,8 +30,7 @@ function Login() {
         props.setToken(response.data.token);
       })
       .catch((error) => {
-        alert(error);
-        console.log(error);
+        alert('invalid credentials, use «m294» as password');
       });
   }
 
@@ -48,8 +46,7 @@ function Login() {
             placeholder="Enter your E-Mail"
             value={credentials.email}
             onInput={onInputChange}
-            // required
-            // valid
+            required
           ></sdx-input>
         </div>
         <div className="margin-bottom-3">
@@ -60,8 +57,7 @@ function Login() {
             placeholder="Enter your Password"
             value={credentials.password}
             onInput={onInputChange}
-            // required
-            // valid
+            required
           ></sdx-input>
         </div>
         <sdx-button

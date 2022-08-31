@@ -11,6 +11,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Source: https://sdx.swisscom.ch/
+
 // Register the Stencil types
 type StencilProps<T> = {
   [P in keyof T]?: Omit<T[P], 'ref'> | HTMLAttributes<T>;
@@ -43,10 +45,6 @@ ReactDOM.render(
   </StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 
 reportWebVitals();
 defineCustomElements();
