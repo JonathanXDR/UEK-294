@@ -18,6 +18,7 @@ function App() {
 
   const [tasks, setTasks] = useState(defaultTasks);
   const [token, setToken] = useState('');
+  const [displayLogin, setDisplayLogin] = React.useState(true);
 
   const title = document.getElementsByClassName('table__title')[0];
 
@@ -112,13 +113,11 @@ function App() {
 
   return (
     <div className="App container">
-      <TaskList
-        tasks={tasks}
-        deleteTask={deleteTask}
-        editTask={updateTask}
-      ></TaskList>
+      <TaskList tasks={tasks} deleteTask={deleteTask}></TaskList>
       <AddTask add={addTask}></AddTask>
-      <Login setToken={updateToken} />
+      {displayLogin ? (
+        <Login setToken={updateToken} setDisplayLogin={setDisplayLogin} />
+      ) : null}
     </div>
   );
 }

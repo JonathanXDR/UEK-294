@@ -5,6 +5,7 @@ const baseURL = 'http://127.0.0.1:3000';
 
 export interface IProps {
   setToken: (token: string) => void;
+  setDisplayLogin: (displayLogin: boolean) => void;
 }
 
 function Login(props: IProps) {
@@ -28,6 +29,7 @@ function Login(props: IProps) {
       .then((response) => {
         localStorage.setItem('token', response.data.token);
         props.setToken(response.data.token);
+        props.setDisplayLogin(false);
       })
       .catch((error) => {
         alert('invalid credentials, use «m294» as password');

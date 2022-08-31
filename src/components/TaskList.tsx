@@ -5,7 +5,6 @@ import '@swisscom/sdx/dist/css/sdx.css';
 export interface IProps {
   tasks: ITask[];
   deleteTask: (task: ITask) => void;
-  editTask: (task: ITask) => void;
 }
 
 function TaskList(props: IProps) {
@@ -39,11 +38,7 @@ function TaskList(props: IProps) {
                       ></sdx-input-item>
                     </td>
                     <td className="buttons">
-                      <sdx-button
-                        theme="secondary"
-                        label="Edit"
-                        onClick={() => props.editTask(task)}
-                      ></sdx-button>
+                      <sdx-button theme="secondary" label="Edit"></sdx-button>
 
                       <sdx-button
                         theme="primary"
