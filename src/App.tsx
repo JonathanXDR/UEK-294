@@ -1,45 +1,44 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './App.css';
 import TaskList from './components/TaskList';
 import ITask from './models/Task';
 import AddTask from './components/AddTask';
 import axios from 'axios';
-import LoginPage from './components/LoginPage';
+import Login from './components/Login';
 
 const defaultTasks: Array<ITask> = [];
 const baseURL = 'http://127.0.0.1:3000';
 
 function App() {
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  };
+
   const [tasks, setTasks] = useState(defaultTasks);
 
-  const token = localStorage.getItem('token');
+  let tasksRequested = useRef(false);
 
   React.useEffect(() => {
-    axios
-      .post(`${baseURL}/auth/jwt/sign`, {
-        email: 'irgendeine@email.adresse',
-        password: 'm294',
-      })
-      .then((response) => {
-        localStorage.setItem('token', response.data.token);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    axios
-      .get(`${baseURL}/auth/jwt/tasks`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        setTasks(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (tasksRequested.current === false) {
+      axios
+        .get(`${baseURL}/auth/jwt/tasks`, headers)
+        .then((response) => {
+          setTasks(response.data);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
+    tasksRequested.current = true;
   });
 
   if (!tasks) return null;
+
+  const setToken = (token: string) => {
+    localStorage.setItem('token', token);
+  };
 
   function addTask(task: ITask) {
     const body = {
@@ -57,25 +56,28 @@ function App() {
     }
 
     task.id = highestId + 1;
-    // console.log(task);
+    console.log(task);
 
     axios
-      .post(`${baseURL}/auth/jwt/tasks`, body, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .post(`${baseURL}/auth/jwt/tasks`, body, headers)
       .then((response) => {
         // console.log(token);
         setTasks([...tasks, task]);
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
       });
 
     if (!task) return 'No post!';
   }
 
   function updateTask(task: ITask) {
-    console.log(task.title);
+    const newTasks = tasks.map((task: ITask) => {
+      if (task.id === task.id) {
+        return task;
+      }
+      return task;
+    });
 
     const body = {
       id: task.id,
@@ -84,9 +86,7 @@ function App() {
     };
 
     axios
-      .put(`${baseURL}/auth/jwt/tasks/${task.id}`, body, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .put(`${baseURL}/auth/jwt/tasks/${task.id}`, body, headers)
       .then((response) => {
         setTasks(
           tasks.map((t) => {
@@ -98,7 +98,7 @@ function App() {
         );
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
       });
   }
 
@@ -108,29 +108,27 @@ function App() {
     );
 
     axios
-      .delete(`${baseURL}/auth/jwt/task/${task.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .delete(`${baseURL}/auth/jwt/task/${task.id}`, headers)
       .then(() => {
         alert('Task successfully deleted!');
         setTasks(nonDeletedTasks);
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
       });
 
     if (!tasks) return 'No post!';
   }
 
   return (
-    <div className="App container margin-top-4">
+    <div className="App container">
       <TaskList
         tasks={tasks}
         deleteTask={deleteTask}
         editTask={updateTask}
       ></TaskList>
       <AddTask add={addTask}></AddTask>
-      {/* <LoginPage /> */}
+      <Login setToken={setToken} />
     </div>
   );
 }

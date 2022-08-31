@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ITask from '../models/Task';
 import '@swisscom/sdx/dist/css/webcomponents.css';
 import '@swisscom/sdx/dist/css/sdx.css';
@@ -10,12 +11,12 @@ export interface IProps {
 
 function TaskList(props: IProps) {
   return (
-    <div className="table">
+    <div className="table margin-top-4">
       <div
         id="my-table"
         className="table table--responsive table--highlight width100"
       >
-        <h2 className="table__title">Todo App</h2>
+        <h1 className="table__title">Todo App</h1>
         <div className="table__wrapper">
           <table>
             <thead>
@@ -31,19 +32,24 @@ function TaskList(props: IProps) {
                 return (
                   <tr key={task.id}>
                     <td>{task.id}</td>
-                    <td>{task.title}</td>
-                    <td>{task.completed}</td>
+                    <td className="title">{task.title}</td>
                     <td>
-                      <sdx-button
-                        theme="primary"
-                        label="Delete"
-                        onClick={() => props.deleteTask(task)}
-                      ></sdx-button>
-
+                      <sdx-input-item
+                        type="checkbox"
+                        checked={task.completed}
+                      ></sdx-input-item>
+                    </td>
+                    <td className="buttons">
                       <sdx-button
                         theme="secondary"
                         label="Edit"
                         onClick={() => props.editTask(task)}
+                      ></sdx-button>
+
+                      <sdx-button
+                        theme="primary"
+                        label="Delete"
+                        onClick={() => props.deleteTask(task)}
                       ></sdx-button>
                     </td>
                   </tr>
